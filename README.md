@@ -8,7 +8,9 @@
 
 ## 在线体验
 
-> 部署后把这里换成你的 Pages 地址：`https://<你的用户名>.github.io/inner-self-50q/`
+**<https://paronya208.github.io/inner-self-50q/>**
+
+打开就能答，不用注册、不用安装、不联网请求任何后端。
 
 ## 特性
 
