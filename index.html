@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>我内心究竟是谁 · 50 题自我观察问卷</title>
+<style>
+  :root{
+    --paper:#f7f4ee;
+    --ink:#241f26;
+    --ink-soft:#4c4450;
+    --muted:#7d7480;
+    --line:rgba(36,31,38,.11);
+    --accent:#6b4d7a;
+    --accent-soft:#f1eaf4;
+    --card:rgba(255,255,255,.74);
+    --shadow:0 22px 50px -30px rgba(36,31,38,.45);
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+    background:
+      radial-gradient(1100px 560px at 8% -12%, #eee2f1 0%, rgba(238,226,241,0) 58%),
+      radial-gradient(900px 520px at 100% -6%, #f7e8dd 0%, rgba(247,232,221,0) 52%),
+      radial-gradient(800px 600px at 50% 115%, #e4ede8 0%, rgba(228,237,232,0) 60%),
+      var(--paper);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:34px 20px 90px}
+  .screen{display:none;animation:rise .45s ease both}
+  .screen.on{display:block}
+  #s-intro .hero{display:flex;flex-direction:column;justify-content:center;min-height:calc(100vh - 150px);min-height:calc(100dvh - 150px)}
+  @media (max-width:520px){#s-intro .hero{min-height:0}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .kicker{
+    font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 18px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-size:clamp(38px,9vw,58px);
+    line-height:1.14;
+    font-weight:600;
+    letter-spacing:.01em;
+    margin:0 0 20px;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{font-size:16.5px;line-height:1.85;color:var(--ink-soft);margin:0 0 26px;max-width:36em}
+  .meta-list{list-style:none;display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0 0 30px}
+  .meta-list li{
+    font-size:13px;color:var(--ink-soft);background:rgba(255,255,255,.6);
+    border:1px solid var(--line);border-radius:999px;padding:7px 14px;
+  }
+  .meta-list b{color:var(--accent);font-weight:600}
+
+  .btn{
+    appearance:none;border:0;cursor:pointer;font:inherit;
+    border-radius:999px;padding:15px 30px;font-size:15.5px;font-weight:600;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{transform:scale(.985)}
+  .btn.primary{
+    background:linear-gradient(135deg,#7b5a8b,#5d4169);
+    color:#fff;box-shadow:0 16px 34px -18px rgba(93,65,105,.85);
+  }
+  .btn.primary:hover{box-shadow:0 20px 40px -18px rgba(93,65,105,.95)}
+  .btn.ghost{
+    background:rgba(255,255,255,.62);color:var(--ink-soft);border:1px solid var(--line);
+  }
+  .btn.ghost:hover{border-color:rgba(107,77,122,.45);color:var(--accent)}
+  .btn:disabled{opacity:.38;cursor:not-allowed;transform:none}
+  .btn:focus-visible,button:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px}
+
+  .tiny{font-size:12.5px;line-height:1.8;color:var(--muted);margin:22px 0 0;max-width:37em}
+  .rule{height:1px;background:var(--line);border:0;margin:30px 0}
+
+  /* ---------- meta step ---------- */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:24px;
+    padding:28px 24px;box-shadow:var(--shadow);backdrop-filter:blur(8px);
+  }
+  .panel h2{font-family:var(--serif);font-size:24px;font-weight:600;margin:0 0 8px}
+  .panel p.sub{color:var(--muted);font-size:14px;line-height:1.75;margin:0 0 22px}
+  .q-block{margin:0 0 24px}
+  .q-block .label{font-size:14.5px;font-weight:600;margin:0 0 12px;color:var(--ink-soft)}
+  .pills{display:flex;flex-wrap:wrap;gap:9px}
+  .pill{
+    font:inherit;font-size:14px;cursor:pointer;color:var(--ink-soft);
+    background:rgba(255,255,255,.7);border:1px solid var(--line);
+    border-radius:999px;padding:9px 16px;transition:all .16s ease;
+  }
+  .pill:hover{border-color:rgba(107,77,122,.4)}
+  .pill[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+
+  /* ---------- quiz ---------- */
+  .qtop{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px}
+  .counter{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .counter b{color:var(--accent);font-weight:600}
+  .track{height:4px;border-radius:99px;background:rgba(36,31,38,.09);overflow:hidden;margin-bottom:34px}
+  .track i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#b593c4,#6b4d7a);transition:width .4s cubic-bezier(.2,.8,.2,1)}
+  .cat{
+    display:inline-block;font-size:11.5px;letter-spacing:.16em;color:var(--accent);
+    background:var(--accent-soft);border-radius:999px;padding:6px 13px;margin-bottom:20px;
+  }
+  .qtext{
+    font-family:var(--serif);font-size:clamp(21px,4.6vw,27px);line-height:1.6;font-weight:600;
+    margin:0 0 28px;min-height:2.2em;letter-spacing:.01em;
+  }
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;
+    font-size:15.5px;line-height:1.55;color:var(--ink-soft);cursor:pointer;
+    background:rgba(255,255,255,.66);border:1px solid var(--line);border-radius:15px;
+    padding:14px 17px;transition:all .16s ease;
+  }
+  .opt .k{
+    flex:none;width:24px;height:24px;border-radius:8px;display:grid;place-items:center;
+    font-size:11.5px;color:var(--muted);background:rgba(36,31,38,.06);font-variant-numeric:tabular-nums;
+  }
+  .opt:hover{border-color:rgba(107,77,122,.45);background:#fff;transform:translateX(2px)}
+  .opt[aria-checked="true"]{
+    background:var(--accent-soft);border-color:var(--accent);color:#3f2c4a;font-weight:600;
+  }
+  .opt[aria-checked="true"] .k{background:var(--accent);color:#fff}
+  .qfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:30px}
+  .qfoot .right{display:flex;gap:10px}
+  .linkbtn{
+    background:none;border:0;font:inherit;font-size:13.5px;color:var(--muted);
+    cursor:pointer;padding:10px 4px;text-decoration:underline;text-underline-offset:4px;
+  }
+  .linkbtn:hover{color:var(--accent)}
+
+  /* ---------- result ---------- */
+  .rhead{margin-bottom:30px}
+  .rhead h1{font-size:clamp(30px,7vw,42px);margin-bottom:12px}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:6px 13px;margin:0 8px 8px 0;
+    background:rgba(255,255,255,.6);
+  }
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:24px;
+    padding:26px 24px;box-shadow:var(--shadow);backdrop-filter:blur(8px);margin-bottom:18px;
+  }
+  .card h3{
+    font-family:var(--serif);font-size:19px;font-weight:600;margin:0 0 6px;letter-spacing:.02em;
+  }
+  .card .note{font-size:12.5px;color:var(--muted);line-height:1.7;margin:0 0 22px}
+
+  .stack{display:flex;height:16px;border-radius:99px;overflow:hidden;background:rgba(36,31,38,.07);margin-bottom:14px}
+  .stack span{display:block;height:100%;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-soft)}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:7px;vertical-align:1px}
+  .legend b{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+
+  .dim{margin-bottom:17px}
+  .dim:last-child{margin-bottom:0}
+  .dim .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:7px}
+  .dim .nm{font-size:14px;color:var(--ink-soft)}
+  .dim .vl{font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+  .dim .vl b{color:var(--ink);font-size:14.5px;font-weight:600;margin-right:6px}
+  .bar{height:8px;border-radius:99px;background:rgba(36,31,38,.075);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#c2a3cf,#7b5a8b);width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .dim .hint{font-size:11.5px;line-height:1.6;color:var(--muted);margin-top:6px}
+
+  .arch{
+    border:1px solid var(--line);border-radius:18px;padding:17px 18px;margin-bottom:11px;
+    background:rgba(255,255,255,.55);
+  }
+  .arch.lead{background:linear-gradient(135deg,rgba(241,234,244,.95),rgba(255,255,255,.7));border-color:rgba(107,77,122,.32)}
+  .arch .h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:4px}
+  .arch .h strong{font-family:var(--serif);font-size:17px;font-weight:600}
+  .arch .h span{font-size:13px;color:var(--accent);font-variant-numeric:tabular-nums;font-weight:600}
+  .arch .tag{font-size:11.5px;letter-spacing:.14em;color:var(--muted);margin-bottom:9px}
+  .arch p{font-size:13.5px;line-height:1.78;color:var(--ink-soft);margin:0}
+  .arch .mini{height:4px;border-radius:99px;background:rgba(36,31,38,.08);overflow:hidden;margin-top:12px}
+  .arch .mini i{display:block;height:100%;background:linear-gradient(90deg,#b593c4,#6b4d7a);border-radius:99px;width:0;transition:width .9s ease}
+  .rest{margin-top:6px}
+  .rest summary{font-size:13px;color:var(--muted);cursor:pointer;padding:8px 0;list-style:none}
+  .rest summary::-webkit-details-marker{display:none}
+  .rest summary::before{content:"＋ ";color:var(--accent)}
+  .rest[open] summary::before{content:"－ "}
+
+  .talk{font-size:15px;line-height:2.0;color:var(--ink-soft)}
+  .talk p{margin:0 0 14px}
+  .talk p:last-child{margin-bottom:0}
+  .talk strong{color:var(--ink);font-weight:600}
+
+  .care{
+    border-left:3px solid #c07a5e;background:rgba(192,122,94,.07);
+    padding:16px 18px;border-radius:0 14px 14px 0;font-size:13.5px;line-height:1.85;color:#6c4a3b;
+  }
+  .care b{color:#8a4b33}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .fineprint{font-size:12px;line-height:1.85;color:var(--muted);margin-top:28px}
+  .fineprint a{color:var(--accent)}
+
+  /* grid modal */
+  .modal{position:fixed;inset:0;background:rgba(36,31,38,.4);backdrop-filter:blur(3px);display:none;z-index:50;padding:24px}
+  .modal.on{display:grid;place-items:center}
+  .modal .box{background:#fdfbf7;border-radius:22px;padding:24px;max-width:440px;width:100%;box-shadow:0 30px 70px -30px rgba(0,0,0,.5)}
+  .modal h4{font-family:var(--serif);font-size:17px;margin:0 0 16px;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(10,1fr);gap:7px}
+  .grid button{
+    aspect-ratio:1;border-radius:8px;border:1px solid var(--line);background:#fff;
+    font:inherit;font-size:11.5px;color:var(--muted);cursor:pointer;font-variant-numeric:tabular-nums;
+    display:grid;place-items:center;padding:0;
+  }
+  .grid button.done{background:var(--accent-soft);border-color:rgba(107,77,122,.35);color:var(--accent);font-weight:600}
+  .grid button.cur{outline:2px solid var(--accent);outline-offset:1px}
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;
+    background:#2f2833;color:#fff;font-size:13.5px;padding:11px 20px;border-radius:999px;
+    pointer-events:none;transition:all .3s ease;z-index:80;
+  }
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-width:520px){
+    .wrap{padding:24px 16px 80px}
+    .card{padding:22px 18px;border-radius:20px}
+    .panel{padding:24px 18px}
+    .grid{grid-template-columns:repeat(8,1fr)}
+  }
+  @media print{
+    body{background:#fff}
+    .no-print,.toast,.modal{display:none!important}
+    .card,.panel{box-shadow:none;border:1px solid #ddd;background:#fff;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ================= INTRO ================= -->
+  <section class="screen on" id="s-intro">
+   <div class="hero">
+    <p class="kicker">A Mirror, Not a Test</p>
+    <h1>我内心<br>究竟<em>是谁</em></h1>
+    <p class="lede">
+      50 个关于<b>性别、身体、情绪、亲密与日常</b>的问题。它不给你贴标签，
+      只是把你此刻散落在各处的感受，摆到同一张桌子上，让你看清楚一点。
+      结果会给出 <b>9 个维度</b>的百分比、<b>两组构成比例</b>，以及 <b>3 种最接近的自我画像</b>。
+    </p>
+    <ul class="meta-list">
+      <li><b>50</b> 题</li>
+      <li>约 <b>8–12</b> 分钟</li>
+      <li><b>本地</b> 计算 · 不上传</li>
+      <li>可返回上一题</li>
+    </ul>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" id="btn-start">开始答题</button>
+      <button class="btn ghost" id="btn-resume" hidden>继续上次</button>
+    </div>
+    <p class="tiny">
+      没有标准答案，也没有“正确答案的人”。如果某道题让你不舒服，可以跳过。
+      结果不是诊断，只是一次参考：它描述的是“此刻的你”，而人是会变化的。
+    </p>
+   </div>
+  </section>
+
+  <!-- ================= META ================= -->
+  <section class="screen" id="s-meta">
+    <div class="panel">
+      <h2>开始之前</h2>
+      <p class="sub">两个可以跳过的问题。它们只影响结果里的措辞，不会被保存到任何地方。</p>
+
+      <div class="q-block">
+        <p class="label">出生时被指定的性别</p>
+        <div class="pills" id="pills-birth">
+          <button class="pill" data-v="f">女性</button>
+          <button class="pill" data-v="m">男性</button>
+          <button class="pill" data-v="x">其他 / 不愿说</button>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <p class="label">年龄段</p>
+        <div class="pills" id="pills-age">
+          <button class="pill" data-v="u18">18 岁以下</button>
+          <button class="pill" data-v="18-24">18–24</button>
+          <button class="pill" data-v="25-34">25–34</button>
+          <button class="pill" data-v="35-44">35–44</button>
+          <button class="pill" data-v="45+">45 岁以上</button>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+        <button class="btn primary" id="btn-meta-go">进入问卷</button>
+        <button class="btn ghost" id="btn-meta-skip">全部跳过</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section class="screen" id="s-quiz">
+    <div class="qtop">
+      <span class="counter">第 <b id="cur-n">1</b> / 50 题</span>
+      <button class="linkbtn" id="btn-grid">题目导航</button>
+    </div>
+    <div class="track"><i id="prog"></i></div>
+    <span class="cat" id="q-cat">性别认同</span>
+    <h2 class="qtext" id="q-text"></h2>
+    <div class="opts" id="q-opts" role="radiogroup"></div>
+    <div class="qfoot">
+      <button class="btn ghost" id="btn-prev">← 上一题</button>
+      <div class="right">
+        <button class="btn ghost" id="btn-skip">跳过</button>
+        <button class="btn primary" id="btn-next" hidden>查看结果</button>
+      </div>
+    </div>
+    <p class="tiny">按数字键 1–5 快速选择，按 ← 返回上一题。</p>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section class="screen" id="s-result">
+    <div class="rhead">
+      <p class="kicker">Your Reflection</p>
+      <h1 id="r-title">你的自我画像</h1>
+      <div id="r-badges"></div>
+      <p class="tiny" id="r-skipnote" style="margin-top:6px"></p>
+    </div>
+
+    <div class="card">
+      <h3>性别认同构成</h3>
+      <p class="note">把你在性别相关题目上的倾向归一化后的占比。三者相加为 100%，不代表“程度”，只代表相对比重。</p>
+      <div class="stack" id="r-gender"></div>
+      <div class="legend" id="r-gender-legend"></div>
+    </div>
+
+    <div class="card">
+      <h3>吸引与亲密构成</h3>
+      <p class="note">同样只反映相对比重。低性吸引不等于冷漠，也不等于无法建立亲密关系。</p>
+      <div class="stack" id="r-attract"></div>
+      <div class="legend" id="r-attract-legend"></div>
+    </div>
+
+    <div class="card">
+      <h3>九个维度</h3>
+      <p class="note">每一维都已按你实际作答的题目数归一化，跳过部分题目不会把它压低。</p>
+      <div id="r-dims"></div>
+    </div>
+
+    <div class="card">
+      <h3>最接近你的几种画像</h3>
+      <p class="note">同一组答案往往同时靠近好几种画像。契合度是加权距离换算的参考值，不是概率。</p>
+      <div id="r-arch"></div>
+    </div>
+
+    <div class="card">
+      <h3>如果只对自己说几句话</h3>
+      <div class="talk" id="r-talk"></div>
+    </div>
+
+    <div class="card" id="r-carecard" hidden>
+      <div class="care" id="r-care"></div>
+    </div>
+
+    <div class="actions no-print">
+      <button class="btn primary" id="btn-copy">复制结果文字</button>
+      <button class="btn ghost" id="btn-print">打印 / 存为 PDF</button>
+      <button class="btn ghost" id="btn-review">回看并修改答案</button>
+      <button class="btn ghost" id="btn-restart">重新作答</button>
+    </div>
+
+    <p class="fineprint">
+      本问卷为自我反思工具，<b>不构成心理、精神或医学诊断</b>，也没有经过标准化信效度检验。
+      它不能告诉你“你是不是跨性别 / 无性恋 / 同性恋”——那只能由你自己在时间里慢慢确认。
+      如果你正处在强烈的痛苦中，请优先寻求现实中的专业支持。
+    </p>
+  </section>
+</div>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <h4>题目导航</h4>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   ENGINE_START  —  纯逻辑，无 DOM 依赖
+   ===================================================================== */
+
+const LIKERT = ["完全不同意","比较不同意","说不清","比较同意","完全同意"];
+
+/* 键位
+   cg 与指定性别相处自在 / inc 性别不一致感 / tr 身体改变需求 / n 非二元流动
+   bd 身材焦虑 / md 情绪负荷 / lf 自我照料 / ex 表达开放
+   nm 规范松动 / ao 异性吸引 / as 同性吸引 / ab 多性别吸引 / aa 低性吸引
+*/
+const KEY_LIST = ["cg","inc","tr","n","bd","md","lf","ex","nm","ao","as","ab","aa"];
+
+const QUESTIONS = [
+  // ---------- 性别认同 ----------
+  {g:"性别认同", t:"小时候，我常觉得自己“本应”是另一个性别的孩子。", a:{inc:.7,n:.2}},
+  {g:"性别认同", t:"被用我出生时被指定的性别来称呼时，我感到自然。", a:{cg:.8}},
+  {g:"性别认同", t:"我曾认真想象过“以另一个性别生活一整天”会是什么感觉。", a:{inc:.5,tr:.4,n:.2}},
+  {g:"性别认同", t:"“男”或“女”这两个分类，装不下真实的我。", a:{n:.9,inc:.2}},
+  {g:"性别认同", t:"我的性别感受会随时间或情境发生变化。", a:{n:1}},
+  {g:"身体与过渡", t:"如果可以选，我希望身体更接近另一种性别的样子。", a:{tr:1,inc:.3}},
+  {g:"身体与过渡", t:"我对自己的声音、体型等性别特征感到满意。", a:{cg:.6,tr:-.5}},
+  {g:"性别认同", t:"照镜子时，我偶尔会觉得镜子里的人有点陌生。", a:{inc:.6,bd:.4}},
+  {g:"表达与观念", t:"我会用服装、发型或姿态，刻意弱化自己的性别特征。", a:{tr:.5,ex:.4,inc:.4}},
+  {g:"性别认同", t:"我希望别人记住我时，不带性别标签。", a:{n:.5,inc:.2}},
+
+  // ---------- 身体与过渡 ----------
+  {g:"身体与过渡", t:"如果条件都允许，我愿意接受激素或手术等身体改变。", a:{tr:1}},
+  {g:"身体与过渡", t:"我关注过跨性别者讲述的过渡经历，并觉得那与自己有关。", a:{tr:.6,inc:.5}},
+  {g:"身体与过渡", t:"我希望能有一个与现在不同的名字或称呼。", a:{tr:.5,ex:.5,inc:.3}},
+  {g:"身体与过渡", t:"即使代价很大，我也希望身体与我的性别感受保持一致。", a:{tr:1}},
+  {g:"身体与过渡", t:"比起改变身体，我更愿意通过穿着和社交身份来调整自己。", a:{ex:.7,tr:-.2}},
+  {g:"身体与过渡", t:"想到“一辈子以现在的性别身份生活”，我心里是平静的。", a:{cg:.5,tr:-.5}},
+  {g:"身体与过渡", t:"我查过性别肯定医疗、改名或相关的流程信息。", a:{tr:.9,inc:.3}},
+  {g:"身体与过渡", t:"如果明天醒来就能无痛地变成另一个性别，我会答应。", a:{tr:.9,inc:.4}},
+
+  // ---------- 身体意象 ----------
+  {g:"身体意象", t:"我会因为身材而回避拍照、游泳或社交场合。", a:{bd:1}},
+  {g:"身体意象", t:"我忍不住反复称体重，或反复检查镜子里的自己。", a:{bd:1}},
+  {g:"身体意象", t:"我对身体的某些部位有强烈的不适，希望它们被切除或重塑。", a:{bd:.6,tr:.6}},
+  {g:"身体意象", t:"吃完东西后，我常感到内疚或后悔。", a:{bd:.8,md:.4}},
+  {g:"身体意象", t:"总体而言，我能接受自己的外形。", a:{bd:-1}},
+  {g:"身体意象", t:"我打扮或运动，主要是为了自己舒服，而不是为了别人的目光。", a:{bd:-.6,lf:.5}},
+
+  // ---------- 情绪状态 ----------
+  {g:"情绪状态", t:"最近半年，我常提不起劲、情绪低落。", a:{md:1}},
+  {g:"情绪状态", t:"压力大的时候，我能找到让自己缓过来的办法。", a:{md:-.8,lf:.4}},
+  {g:"情绪状态", t:"我有时觉得自己不值得被喜欢。", a:{md:1}},
+  {g:"情绪状态", t:"我入睡困难，或者睡醒了也不觉得休息过。", a:{md:.9,lf:-.3}},
+  {g:"情绪状态", t:"我有可以说心里话的人。", a:{md:-.7,lf:.6}},
+  {g:"情绪状态", t:"我出现过“如果我不在了，会不会更轻松”的念头。", a:{md:1}},
+  {g:"情绪状态", t:"我对未来有一些具体的期待或计划。", a:{md:-.7,lf:.7}},
+
+  // ---------- 日常节律 ----------
+  {g:"日常节律", t:"我的作息大体规律。", a:{lf:1}},
+  {g:"日常节律", t:"我常熬夜到很晚，即使第二天有事。", a:{lf:-.9,md:.2}},
+  {g:"日常节律", t:"我会为自己认真做一顿饭，或好好吃饭。", a:{lf:.8}},
+  {g:"日常节律", t:"我的房间或桌面长期乱到不想让别人看见。", a:{lf:-.7}},
+  {g:"日常节律", t:"我有长期投入的爱好或兴趣。", a:{lf:1}},
+  {g:"日常节律", t:"我会定期运动，或者出门走走。", a:{lf:.8}},
+  {g:"日常节律", t:"我的日常更多是“被推着走”，而不是我自己选的。", a:{lf:-.8,md:.4}},
+
+  // ---------- 吸引与亲密 ----------
+  {g:"吸引与亲密", t:"我曾对与自己性别相同的人产生过心动或性方面的吸引。", a:{as:1}},
+  {g:"吸引与亲密", t:"我过去的心动对象，主要是——", a:{as:1,ao:1,ab:1,aa:1},
+    o:["和我同性的人","和我异性的人","不止一个性别的人","几乎没有过心动","说不清"],
+    s:[{as:.85,ab:.2},{ao:.85,ab:.2},{ab:.9,as:.3,ao:.3},{aa:.8},{as:.3,ao:.25,ab:.3,aa:.2}]},
+  {g:"吸引与亲密", t:"即使面对喜欢的人，我对性的兴趣也不大。", a:{aa:1}},
+  {g:"吸引与亲密", t:"我曾对与自己不同性别的人产生过心动或性方面的吸引。", a:{ao:1}},
+  {g:"吸引与亲密", t:"我很难对任何人产生浪漫意义上的喜欢。", a:{aa:.9}},
+  {g:"吸引与亲密", t:"如果用一个词描述自己的吸引模式，更接近——", a:{as:1,ao:1,ab:1,aa:1},
+    o:["主要被异性吸引","主要被同性吸引","被不止一个性别吸引","很少或几乎不被性吸引","还在变化，说不清"],
+    s:[{ao:.9},{as:.9},{ab:.9},{aa:.9},{as:.25,ao:.25,ab:.3,aa:.25}]},
+
+  // ---------- 表达与观念 ----------
+  {g:"表达与观念", t:"我愿意让身边的人知道真实的我是什么样。", a:{ex:1,nm:.2}},
+  {g:"表达与观念", t:"在社交中，我常扮演一个“更符合期待”的自己。", a:{ex:.7,md:.4,nm:.3}},
+  {g:"表达与观念", t:"“男人该怎样、女人该怎样”这类期待，应该更宽松一些。", a:{nm:1}},
+  {g:"表达与观念", t:"看到别人打破性别常规时，我心里是被鼓舞的。", a:{nm:.7,ex:.3}},
+  {g:"表达与观念", t:"我认为声音、体型这些性别特征，很大程度上决定了一个人“是谁”。", a:{nm:-.8}},
+  {g:"表达与观念", t:"我愿意生活在一个几乎没有性别标签的世界里。", a:{nm:.8}}
+];
+
+const DIMS = [
+  {k:"cg", name:"性别安稳度",    hint:"与自己的身体、性别身份相处是否顺畅"},
+  {k:"inc", name:"性别不一致感", hint:"觉得自己“不该是这个性别”的强度"},
+  {k:"tr", name:"身体改变需求",  hint:"想改变身体结构或性别呈现的强度"},
+  {k:"n",  name:"非二元 / 流动", hint:"不愿被“男 / 女”二分框住的程度"},
+  {k:"bd", name:"身材焦虑",      hint:"被外形与体重牵着走的程度"},
+  {k:"md", name:"情绪负荷",      hint:"近期的心理负担有多重"},
+  {k:"lf", name:"自我照料",      hint:"吃、睡、动的日常稳定度"},
+  {k:"ex", name:"表达开放度",    hint:"希望被真实地看见的程度"},
+  {k:"nm", name:"规范松动",      hint:"对“性别剧本”的怀疑程度"}
+];
+
+const ARCHETYPES = [
+  {id:"anchor", name:"岸上的人", tag:"稳定 · 自洽",
+   t:{cg:78,inc:22,tr:18,n:18,bd:32,md:32,lf:68,ex:45,nm:45,aa:30},
+   w:{cg:.30,inc:.30,tr:.25,n:.20,bd:.15,md:.20,lf:.15},
+   desc:"你和自己的性别、身体大体相处得来，日常里也有可依靠的节奏。这并不等于“没有故事”，只是你此刻的锚点比较稳。"},
+  {id:"stranger", name:"身体里的异乡人", tag:"不一致 · 渴望改变",
+   t:{cg:28,inc:80,tr:78,n:42,bd:62,md:58,lf:45,ex:50,nm:60,aa:30},
+   w:{inc:.35,tr:.35,bd:.20,md:.15,cg:.20},
+   desc:"你和身体之间隔着一层说不清的东西，改变外观或身体结构的念头可能反复出现。它值得被认真对待，但不必今天就下结论。"},
+  {id:"fog", name:"雾中的探索者", tag:"不确定 · 观察中",
+   t:{cg:42,inc:62,tr:55,n:70,bd:50,md:55,lf:50,ex:65,nm:72,aa:42},
+   w:{n:.30,inc:.25,tr:.20,ex:.20,nm:.20},
+   desc:"你还在收集关于自己的证据。答案没有成形很正常——允许“暂时不知道”，往往比仓促命名更接近真实。"},
+  {id:"tide", name:"潮汐型流动者", tag:"流动 · 去标签",
+   t:{cg:38,inc:52,tr:42,n:82,nm:82,ex:65,bd:45,md:45,lf:55,aa:40},
+   w:{n:.40,nm:.30,ex:.20,inc:.15},
+   desc:"你的性别感受不是一条直线，更像随情境涨落的潮水。标签对你是工具，不是房子——住得下就住，住不下就走。"},
+  {id:"still", name:"静水无波者", tag:"低吸引 · 关系另寻",
+   t:{cg:55,inc:32,tr:28,n:45,aa:85,md:42,bd:38,lf:58,ex:50,nm:55},
+   w:{aa:.50,md:.20,bd:.15,lf:.15},
+   desc:"性很少成为你理解自己、或靠近别人的入口。亲密、信任与共同生活，可能是你更熟悉的语言——这不奇怪，也不残缺。"},
+  {id:"voice", name:"想被看见的人", tag:"表达 · 出柜意愿",
+   t:{cg:42,inc:52,tr:45,n:58,ex:86,nm:76,bd:50,md:50,lf:55,aa:35},
+   w:{ex:.45,nm:.30,inc:.15,tr:.15},
+   desc:"你心里有一个更真实的版本，正在找出口。被看见的需要是真的；但什么时候、对谁、以什么方式，这支笔一直握在你手里。"},
+  {id:"weight", name:"承压前行者", tag:"情绪 · 需要照顾",
+   t:{cg:45,inc:50,tr:45,n:40,md:84,bd:62,lf:30,ex:40,nm:48,aa:45},
+   w:{md:.40,bd:.25,lf:.30},
+   desc:"你身上背着不轻的东西，日常节律往往最先被牺牲。此刻最值得的投资，可能不是想清楚“我是谁”，而是先让自己缓一口气。"},
+  {id:"plain", name:"安静的同路人", tag:"认同稳定 · 吸引明确",
+   t:{cg:70,inc:22,tr:18,n:30,bd:38,md:38,lf:60,ex:52,nm:58,as:80},
+   w:{as:.35,cg:.20,inc:.15,tr:.15,nm:.10,ex:.10},
+   desc:"你的性别位置是稳的，只是你被谁吸引这件事，和多数人的默认设置不一样。这份不一样本身不构成问题——真正需要处理的，往往是别人的目光。"}
+];
+
+const GENDER_SHARES = [
+  {k:"cg",  color:"#7fa192", label:"与指定性别一致的认同"},
+  {k:"mix", color:"#c98a6b", label:"朝向另一性别的倾向"},
+  {k:"n",   color:"#8a7fc0", label:"非二元 / 流动"}
+];
+const ATTRACT_SHARES = [
+  {k:"ao", color:"#93a3c4", label:"异性吸引"},
+  {k:"as", color:"#c98aa8", label:"同性吸引"},
+  {k:"ab", color:"#9fae86", label:"多性别吸引"},
+  {k:"aa", color:"#b6afa4", label:"低性吸引"}
+];
+
+function clamp(v,lo,hi){ return v<lo?lo:(v>hi?hi:v); }
+
+function keyTotals(){
+  const tot={}; KEY_LIST.forEach(k=>tot[k]=0);
+  QUESTIONS.forEach(q=>{
+    KEY_LIST.forEach(k=>{
+      const w=q.a[k]; if(!w) return;
+      const aw=Math.abs(w);
+      if(q.s){
+        let mv=0,mn=1;
+        q.s.forEach(op=>{ const v=op[k]||0; if(v>mv)mv=v; if(v<mn)mn=v; });
+        tot[k]+= aw*(w>0?mv:(1-mn));
+      }else{ tot[k]+=aw; }
+    });
+  });
+  return tot;
+}
+
+/* 让每个维度的“证据容量”一致：这样同一个“说不清”在各维度上都落在 50% 附近，
+   占比才有可比性（对某维度整体乘常数不改变它的百分比）。 */
+const RAW_TOTAL = keyTotals();
+KEY_LIST.forEach(k=>{
+  const t=RAW_TOTAL[k];
+  if(t>0) QUESTIONS.forEach(q=>{ if(q.a[k]) q.a[k]*= 1/t; });
+});
+const KEY_MAX = keyTotals();
+
+/* answers: 长度 50 的数组，元素为选项下标或 null */
+function scoreAll(answers){
+  const sum={}, mx={};
+  KEY_LIST.forEach(k=>{ sum[k]=0; mx[k]=0; });
+  QUESTIONS.forEach((q,i)=>{
+    const idx=answers[i];
+    if(idx===null||idx===undefined) return;
+    KEY_LIST.forEach(k=>{
+      const w=q.a[k]; if(!w) return;
+      const aw=Math.abs(w);
+      if(q.s){
+        const op=q.s[idx]||{};
+        let mv=0,mn=1;
+        q.s.forEach(o=>{ const v=o[k]||0; if(v>mv)mv=v; if(v<mn)mn=v; });
+        const v=op[k]||0;
+        sum[k]+= aw*(w>0? v : 1-v);
+        mx[k]+= aw*(w>0? mv : 1-mn);
+      }else{
+        let v=idx/4;
+        if(w<0) v=1-v;
+        sum[k]+=aw*v; mx[k]+=aw;
+      }
+    });
+  });
+  const p={};
+  KEY_LIST.forEach(k=>{ p[k]= mx[k] ? clamp(Math.round(sum[k]/mx[k]*100),0,100) : 0; });
+  return p;
+}
+
+/* 占比：只统计高于“中性水位”的部分，避免大量中立回答把某一项顶到 60% */
+const NEUTRAL = 42;
+function toShares(p, defs){
+  const raw=defs.map(d=>{
+    const v = d.k==="mix" ? (p.inc+p.tr)/2 : p[d.k];
+    return Math.max(0, v-NEUTRAL);
+  });
+  let total=raw.reduce((a,b)=>a+b,0);
+  const pcts = total<1e-9 ? defs.map(()=>100/defs.length) : raw.map(v=>v/total*100);
+  const out=pcts.map(v=>Math.floor(v));
+  let rem=100-out.reduce((a,b)=>a+b,0);
+  const order=pcts.map((v,i)=>({i,f:v-Math.floor(v)})).sort((a,b)=>b.f-a.f);
+  for(let j=0;j<rem;j++) out[order[j%order.length].i]++;
+  return defs.map((d,i)=>({...d, pct:out[i]}));
+}
+
+function archetypeScores(p){
+  return ARCHETYPES.map(a=>{
+    let num=0, den=0;
+    for(const k in a.w){ num+=a.w[k]*Math.abs((p[k]||0)-a.t[k]); den+=a.w[k]; }
+    const match=clamp(Math.round((100-num/den*1.45)*10)/10,0,100);
+    return {id:a.id,name:a.name,tag:a.tag,desc:a.desc,match};
+  }).sort((x,y)=>y.match-x.match);
+}
+
+function verdict(p, answers){
+  const answered = answers.filter(x=>x!==null&&x!==undefined).length;
+  if(answered < 25){
+    return {skipped: answers.length-answered, lines:[
+      "答得太少，暂时还看不出形状。补齐大部分题目后，再看结果会更可靠一些。"
+    ]};
+  }
+  const out=[];
+  const skipped = answers.filter(x=>x===null||x===undefined).length;
+  if(p.tr>=65) out.push("身体与性别的关系，在你这里不是一个抽象话题，而是需要认真对待的议题。");
+  else if(p.tr<=30&&p.inc<=35) out.push("你和出生时被赋予的性别相处得比较顺，性别不是一件每天都要处理的事。");
+  if(p.n>=65) out.push("你对“非二元”或“流动”的描述有共鸣——两个格子已经不太装得下你了。");
+  if(p.bd>=65) out.push("你对身体外形的在意程度偏高，这份在意可能正在消耗本可以用在别处的力气。");
+  else if(p.bd<=30) out.push("你与身体形象的关系相对松弛，这并不常见，值得被你自己看见。");
+  if(p.md>=70) out.push("情绪负荷偏高。请把它当成一个需要被照顾的信号，而不是性格上的缺陷。");
+  else if(p.md<=35) out.push("你的情绪整体上是有支撑的，这是你继续探索其他问题时的底气。");
+  if(p.lf<=35) out.push("生活节律是容易被忽略的一环：睡、吃、动，往往比“想明白”更先影响我们。");
+  if(p.ex>=70) out.push("你有比较强的被看见的愿望。多数时候你不是不想说，只是在等一个安全的时机。");
+  if(p.nm>=70) out.push("你对性别规范的怀疑相当彻底，这让你更容易接纳与自己不同的人，也更容易接纳自己。");
+  if(p.aa>=70) out.push("低性吸引是你理解自己的一条重要线索。它不等于冷漠，也不等于不能爱。");
+  else if(p.as>=60&&p.ao<40) out.push("同性的吸引在你的经验里占着位置，而它似乎并不需要被解释成别的东西。");
+  else if(p.ab>=60) out.push("你的吸引并不只朝向一个性别，这在很多人身上都存在，只是很少被说出口。");
+  if(out.length<2) out.push("你的各项分布比较均衡，没有哪一处特别尖锐。均衡本身也是一种答案。");
+  return {lines: out.slice(0,4), skipped};
+}
+
+/* =====================================================================
+   ENGINE_END
+   ===================================================================== */
+
+(function(){
+  "use strict";
+
+  const $ = s => document.querySelector(s);
+  const STORE = "inner-self-50q-v1";
+  const state = { cur:0, ans:new Array(50).fill(null), meta:{birth:null, age:null}, done:false };
+
+  const el = {
+    screens:{ intro:$("#s-intro"), meta:$("#s-meta"), quiz:$("#s-quiz"), result:$("#s-result") },
+    curN:$("#cur-n"), prog:$("#prog"), cat:$("#q-cat"), qtext:$("#q-text"), opts:$("#q-opts"),
+    prev:$("#btn-prev"), next:$("#btn-next"), skip:$("#btn-skip")
+  };
+
+  /* ---------- persistence ---------- */
+  function save(){
+    try{ localStorage.setItem(STORE, JSON.stringify({ans:state.ans, meta:state.meta})); }catch(e){}
+  }
+  function load(){
+    try{
+      const raw=localStorage.getItem(STORE); if(!raw) return null;
+      const d=JSON.parse(raw);
+      if(!d || !Array.isArray(d.ans) || d.ans.length!==50) return null;
+      return d;
+    }catch(e){ return null; }
+  }
+
+  function show(name){
+    Object.values(el.screens).forEach(s=>s.classList.remove("on"));
+    el.screens[name].classList.add("on");
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+
+  /* ---------- intro ---------- */
+  const saved = load();
+  const btnResume = $("#btn-resume");
+  if(saved && saved.ans.some(v=>v!==null)){
+    btnResume.hidden=false;
+    btnResume.textContent = "继续上次（已答 " + saved.ans.filter(v=>v!==null).length + " 题）";
+    btnResume.addEventListener("click", ()=>{
+      state.ans = saved.ans.slice();
+      state.meta = saved.meta || state.meta;
+      state.cur = Math.max(0, state.ans.findIndex(v=>v===null));
+      show("quiz"); renderQ();
+    });
+  }
+  $("#btn-start").addEventListener("click", ()=>show("meta"));
+
+  /* ---------- meta ---------- */
+  function bindPills(sel, key){
+    const box=$(sel);
+    box.addEventListener("click", e=>{
+      const b=e.target.closest(".pill"); if(!b) return;
+      const v=b.dataset.v;
+      const now = state.meta[key]===v ? null : v;
+      state.meta[key]=now;
+      box.querySelectorAll(".pill").forEach(p=>p.setAttribute("aria-pressed", String(p.dataset.v===now)));
+    });
+  }
+  bindPills("#pills-birth","birth");
+  bindPills("#pills-age","age");
+  $("#btn-meta-go").addEventListener("click", ()=>{ show("quiz"); state.cur=0; renderQ(); });
+  $("#btn-meta-skip").addEventListener("click", ()=>{ state.meta={birth:null,age:null}; show("quiz"); state.cur=0; renderQ(); });
+
+  /* ---------- quiz ---------- */
+  function renderQ(){
+    const q=QUESTIONS[state.cur];
+    const total=QUESTIONS.length;
+    el.curN.textContent=String(state.cur+1);
+    const answered=state.ans.filter(v=>v!==null).length;
+    el.prog.style.width=(answered/total*100)+"%";
+    el.cat.textContent=q.g;
+    el.qtext.textContent=q.t;
+    const opts=q.o||LIKERT;
+    el.opts.innerHTML="";
+    opts.forEach((label,i)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.className="opt"; b.setAttribute("role","radio");
+      b.setAttribute("aria-checked", String(state.ans[state.cur]===i));
+      b.innerHTML='<span class="k">'+(i+1)+'</span><span>'+label+'</span>';
+      b.addEventListener("click", ()=>pick(i));
+      el.opts.appendChild(b);
+    });
+    el.prev.disabled = state.cur===0;
+    const allDone = state.ans.every(v=>v!==null);
+    el.next.hidden = !allDone;
+    el.skip.hidden = !(state.cur<total-1);
+  }
+
+  function pick(i){
+    state.ans[state.cur]=i; save();
+    [...el.opts.children].forEach((c,idx)=>c.setAttribute("aria-checked", String(idx===i)));
+    const answered=state.ans.filter(v=>v!==null).length;
+    el.prog.style.width=(answered/QUESTIONS.length*100)+"%";
+    if(state.cur===QUESTIONS.length-1){
+      el.next.hidden=false;
+      setTimeout(()=>{ if(state.ans.every(v=>v!==null)) finish(); }, 320);
+      return;
+    }
+    setTimeout(()=>{ if(state.ans[state.cur]===i){ state.cur++; renderQ(); } }, 230);
+  }
+
+  el.prev.addEventListener("click", ()=>{ if(state.cur>0){ state.cur--; renderQ(); } });
+  el.skip.addEventListener("click", ()=>{
+    if(state.cur<QUESTIONS.length-1){ state.cur++; renderQ(); }
+  });
+  el.next.addEventListener("click", ()=>{ if(state.ans.every(v=>v!==null)) finish(); });
+
+  document.addEventListener("keydown", e=>{
+    if(!el.screens.quiz.classList.contains("on")) return;
+    if(e.key==="ArrowLeft"){ el.prev.click(); return; }
+    if(e.key==="ArrowRight" && !el.next.hidden){ el.next.click(); return; }
+    const n=parseInt(e.key,10);
+    if(n>=1 && n<=(QUESTIONS[state.cur].o?QUESTIONS[state.cur].o.length:LIKERT.length)) pick(n-1);
+  });
+
+  /* ---------- grid ---------- */
+  const modal=$("#modal"), grid=$("#grid");
+  $("#btn-grid").addEventListener("click", ()=>{
+    grid.innerHTML="";
+    state.ans.forEach((v,i)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.textContent=String(i+1);
+      if(v!==null) b.classList.add("done");
+      if(i===state.cur) b.classList.add("cur");
+      b.addEventListener("click", ()=>{ state.cur=i; modal.classList.remove("on"); renderQ(); });
+      grid.appendChild(b);
+    });
+    modal.classList.add("on");
+  });
+  modal.addEventListener("click", e=>{ if(e.target===modal) modal.classList.remove("on"); });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape") modal.classList.remove("on"); });
+
+  /* ---------- toast ---------- */
+  let toastTimer;
+  function toast(msg){
+    const t=$("#toast"); t.textContent=msg; t.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>t.classList.remove("on"),1900);
+  }
+
+  /* ---------- result ---------- */
+  function finish(){
+    state.done=true; save();
+    const p=scoreAll(state.ans);
+    const gs=toShares(p, GENDER_SHARES);
+    const as=toShares(p, ATTRACT_SHARES);
+    const arch=archetypeScores(p);
+    const v=verdict(p, state.ans);
+
+    $("#r-title").textContent = "此刻的你，更接近「" + arch[0].name + "」";
+
+    const badges=[];
+    if(state.meta.birth==="f") badges.push("出生时被指定为女性");
+    if(state.meta.birth==="m") badges.push("出生时被指定为男性");
+    if(state.meta.birth==="x") badges.push("出生指定性别：未说明");
+    const ageMap={"u18":"18 岁以下","18-24":"18–24 岁","25-34":"25–34 岁","35-44":"35–44 岁","45+":"45 岁以上"};
+    if(state.meta.age) badges.push(ageMap[state.meta.age]);
+    badges.push("已答 " + state.ans.filter(x=>x!==null).length + " / 50 题");
+    $("#r-badges").innerHTML = badges.map(b=>'<span class="badge">'+b+'</span>').join("");
+    $("#r-skipnote").textContent = v.skipped>0 ? "跳过了 "+v.skipped+" 题，相关维度已按实际作答的题目重新归一化。" : "";
+
+    // gender stack
+    const gTotal=gs.reduce((a,b)=>a+b.pct,0)||1;
+    $("#r-gender").innerHTML = gs.map(g=>'<span style="width:'+(g.pct/gTotal*100)+'%;background:'+g.color+'"></span>').join("");
+    $("#r-gender-legend").innerHTML = gs.map(g=>'<span><i style="background:'+g.color+'"></i>'+g.label+' <b>'+g.pct+'%</b></span>').join("");
+
+    const aTotal=as.reduce((a,b)=>a+b.pct,0)||1;
+    $("#r-attract").innerHTML = as.map(g=>'<span style="width:'+(g.pct/aTotal*100)+'%;background:'+g.color+'"></span>').join("");
+    $("#r-attract-legend").innerHTML = as.map(g=>'<span><i style="background:'+g.color+'"></i>'+g.label+' <b>'+g.pct+'%</b></span>').join("");
+
+    // dims
+    const extreme = DIMS.map(d=>({k:d.k,dev:Math.abs(p[d.k]-50)})).sort((a,b)=>b.dev-a.dev).slice(0,3).map(x=>x.k);
+    $("#r-dims").innerHTML = DIMS.map(d=>{
+      const val=p[d.k];
+      const hint = extreme.indexOf(d.k)>=0 ? '<div class="hint">'+d.hint+'</div>' : "";
+      return '<div class="dim"><div class="top"><span class="nm">'+d.name+'</span>'+
+        '<span class="vl"><b>'+val+'%</b></span></div>'+
+        '<div class="bar"><i data-w="'+val+'"></i></div>'+hint+'</div>';
+    }).join("");
+
+    // archetypes
+    const top=arch.slice(0,3), rest=arch.slice(3);
+    const archCard=a=>
+      '<div class="arch'+(a==="lead"?"":"")+'">'+
+      '<div class="h"><strong>'+a.name+'</strong><span>契合度 '+a.match+'%</span></div>'+
+      '<div class="tag">'+a.tag+'</div><p>'+a.desc+'</p>'+
+      '<div class="mini"><i data-w="'+a.match+'"></i></div></div>';
+    $("#r-arch").innerHTML =
+      top.map((a,i)=>archCard(a,i===0?"lead":"")).join("") +
+      '<details class="rest"><summary>另外 '+rest.length+' 种画像</summary>' +
+      rest.map(a=>'<div class="arch"><div class="h"><strong>'+a.name+'</strong><span>契合度 '+a.match+'%</span></div><div class="tag">'+a.tag+'</div><p>'+a.desc+'</p><div class="mini"><i data-w="'+a.match+'"></i></div></div>').join("") +
+      '</details>';
+
+    // narrative
+    $("#r-talk").innerHTML = v.lines.map(s=>"<p>"+s+"</p>").join("");
+
+    // care note
+    const care=$("#r-carecard");
+    const q30 = state.ans[29];
+    if(q30!==null && q30>=3){
+      care.hidden=false;
+      $("#r-care").innerHTML =
+        "<b>关于第 30 题</b><br>你在“如果我不在了，会不会更轻松”这道题上给出的回答，值得被认真对待。"+
+        "如果这个念头最近出现得比较频繁，请尽快联系一个你信得过的人，或拨打心理援助热线（中国大陆：<b>12356</b>，24 小时）。"+
+        "这不是软弱，也不代表你“有问题”——它只说明你现在承受的东西，超过了独自能扛的范围。"+
+        "如果你同时在考虑身体上的改变，也建议找一位对性别议题友善的专业人士聊聊，而不是独自查资料下判断。";
+    }else if(p.md>=70){
+      care.hidden=false;
+      $("#r-care").innerHTML =
+        "<b>关于情绪负荷</b><br>你在这部分得到的分数偏高，说明最近的消耗不小、恢复得不够。"+
+        "如果这种状态已经持续了几周，找一位心理咨询师或精神科医生聊聊，会比继续硬撑更有用（中国大陆可拨打 <b>12356</b> 心理援助热线）。"+
+        "在探索“我是谁”之前，先把睡眠、吃饭和一点点休息找回来，往往更划算。";
+    }else{
+      care.hidden=true;
+    }
+
+    show("result");
+    requestAnimationFrame(()=>{
+      document.querySelectorAll("[data-w]").forEach(node=>{
+        node.style.width = node.dataset.w + "%";
+      });
+    });
+    window.__lastP = p;
+    window.__lastArch = arch;
+  }
+
+  /* ---------- result actions ---------- */
+  $("#btn-review").addEventListener("click", ()=>{ state.cur=0; show("quiz"); renderQ(); });
+  $("#btn-restart").addEventListener("click", ()=>{
+    state.ans=new Array(50).fill(null); state.cur=0; state.done=false;
+    try{ localStorage.removeItem(STORE); }catch(e){}
+    show("intro");
+    btnResume.hidden=true;
+  });
+  $("#btn-print").addEventListener("click", ()=>window.print());
+
+  function resultText(){
+    const p=window.__lastP, arch=window.__lastArch;
+    if(!p) return "";
+    const gs=toShares(p,GENDER_SHARES), as=toShares(p,ATTRACT_SHARES);
+    const L=[];
+    L.push("我内心究竟是谁 · 50 题自我观察");
+    L.push("生成时间：" + new Date().toLocaleString("zh-CN"));
+    L.push("");
+    L.push("性别认同构成：" + gs.map(g=>g.label+" "+g.pct+"%").join("；"));
+    L.push("吸引构成：" + as.map(g=>g.label+" "+g.pct+"%").join("；"));
+    L.push("");
+    L.push("九维得分：");
+    DIMS.forEach(d=>L.push("· "+d.name+"："+p[d.k]+"%"));
+    L.push("");
+    L.push("最接近的画像：");
+    arch.slice(0,3).forEach((a,i)=>L.push((i+1)+". "+a.name+"（契合度 "+a.match+"%）— "+a.tag));
+    L.push("");
+    L.push("（本结果仅供自我参考，不构成任何诊断。）");
+    return L.join("\n");
+  }
+  $("#btn-copy").addEventListener("click", async ()=>{
+    const txt=resultText();
+    try{
+      await navigator.clipboard.writeText(txt);
+      toast("已复制到剪贴板");
+    }catch(e){
+      const ta=document.createElement("textarea");
+      ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand("copy"); toast("已复制到剪贴板"); }
+      catch(err){ toast("复制失败，请手动选择文字"); }
+      ta.remove();
+    }
+  });
+})();
+</script>
+</body>
+</html>
